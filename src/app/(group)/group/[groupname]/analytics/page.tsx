@@ -5,8 +5,7 @@ import { GetPeriod, getStatsForDay } from "./server";
 import Statsday from "./stats";
 
 type Props = {
-  params: {
-   
+  params:{
     groupname: string;
   };
   searchParams:{
@@ -18,13 +17,12 @@ type Props = {
 export default async function Page({ params ,searchParams}: Props) {
   const current = new Date();
   const { month, year } = searchParams;
-const{groupname}= params
   const period = {
     month: month ? parseInt(month) : current.getMonth() + 1,
     year: year ? parseInt(year) : current.getFullYear(),
   };
 
-  if (!groupname) {
+  if (params.groupname) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <span className="text-lg font-medium text-red-500">Error loading data!</span>
@@ -43,7 +41,7 @@ const{groupname}= params
 
       <div className="flex flex-col gap-6">
         <Suspense fallback={<Skeleton className="w-full h-[200px] rounded-md" />}>
-          <StaticCard selected={period} groupname={groupname} />
+          <StaticCard selected={period} groupname={params.groupname} />
         </Suspense>
       </div>
     </div>
