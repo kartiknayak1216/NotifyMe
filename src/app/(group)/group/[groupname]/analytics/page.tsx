@@ -13,12 +13,12 @@ type Props = {
   params: Promise<{
     groupname:string
   }>;
-  searchParams: { month?: string; year?: string };
+  searchParams: Promise<{ month?: string; year?: string }>;
 };
 
 export default async function Page({ params, searchParams }: Props) {
   const current = new Date();
-  const { month, year } = searchParams || {};
+  const { month, year } = await searchParams ;
   const { groupname } = await params;
 
   const period: Period = {
