@@ -10,14 +10,16 @@ type Period = {
 };
 
 type Props = {
-  params: { groupname: string };
+  params: Promise<{
+    groupname:string
+  }>;
   searchParams: { month?: string; year?: string };
 };
 
 export default async function Page({ params, searchParams }: Props) {
   const current = new Date();
   const { month, year } = searchParams || {};
-  const { groupname } = params;
+  const { groupname } = await params;
 
   const period: Period = {
     month: month ? parseInt(month, 10) : current.getMonth() + 1,
