@@ -6,16 +6,19 @@ import Statsday from "./stats";
 
 type Props = {
   params: {
-    month?: string;
-    year?: string;
+   
     groupname: string;
   };
+  searchParams:{
+    month?:string,
+    year?:string
+  }
 };
 
-export default async function Page({ params }: Props) {
+export default async function Page({ params ,searchParams}: Props) {
   const current = new Date();
-  const { month, year, groupname } = params;
-
+  const { month, year } = searchParams;
+const{groupname}= params
   const period = {
     month: month ? parseInt(month) : current.getMonth() + 1,
     year: year ? parseInt(year) : current.getFullYear(),
