@@ -5,13 +5,17 @@ import Periodselection from "./periodselection";
 import { GetPeriod, getStatsForDay } from "./server";
 import Statsday from "./stats";
 
-export default async function Page({
-  searchParams,
-}: {
-  searchParams: { month?: string; year?: string; groupname: string };
-}) {
+type Props={
+  params:{
+    month:string,
+    year:string,
+    groupname:string
+  }
+}
+export default async function Page({params
+}: Props) {
   const current = new Date();
-  const { month, year, groupname } = searchParams;
+  const { month, year, groupname } = params;
 
   const period = {
     month: month ? parseInt(month) : current.getMonth() + 1,

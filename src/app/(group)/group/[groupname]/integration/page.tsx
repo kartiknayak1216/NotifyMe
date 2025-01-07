@@ -50,7 +50,7 @@ export default function Page({ params }: Props) {
   }
 
   const snippet = `
-  await fetch("http://localhost:3000/api/events", {
+  await fetch("${process.env.NEXT_PUBLIC_WEB_URL}/api/v1/events", {
     method: "POST",
     body: JSON.stringify({
       category: "${data.data.name}", // your group name
