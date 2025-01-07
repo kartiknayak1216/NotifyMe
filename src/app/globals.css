@@ -86,3 +86,16 @@ body {
     @apply bg-background text-foreground;
   }
 }
+body, html {
+  overflow: auto; /* Enable scrolling */
+}
+
+::-webkit-scrollbar {
+  width: 0; /* Remove the scrollbar width */
+  height: 0; /* Remove the scrollbar height */
+}
+
+* {
+  scrollbar-width: none; /* Hide scrollbar for Firefox */
+  -ms-overflow-style: none; /* Hide scrollbar for older IE versions */
+}

@@ -3,6 +3,7 @@ import MaxWidthWrapper from "@/components/global/max-width-wrapper";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -26,13 +27,14 @@ export default function Home() {
                 "Empower your workflows for seamless integration with Discord, Email, WhatsApp, enabling you to achieve more with less effort."
               </blockquote>
             </div>
-
+<Link href="/dashboard">
             <div className="relative flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8">
               <button className="inline-flex h-12 animate-shimmer items-center justify-center rounded-md border border-brand-400 bg-[linear-gradient(110deg,#E1E9F6,45%,#C3D3ED,55%,#E1E9F6)] bg-[length:200%_100%] px-6 font-medium text-brand-900 transition-colors focus:outline-none focus:ring-2 focus:ring-brand-400 focus:ring-offset-2 focus:ring-offset-white">
                 <span className="font-semibold text-lg text-brand-700">Continue to Dashboard</span>
                 <ArrowRight className="w-5 h-5 text-brand-700 ml-2" />
               </button>
             </div>
+            </Link>
 
             <div className="mt-10 flex justify-center w-full">
               <Image
