@@ -4,28 +4,32 @@ import Periodselection from "./periodselection";
 import { GetPeriod, getStatsForDay } from "./server";
 import Statsday from "./stats";
 
-type Props = {
-  params:{
-    groupname: string;
-  };
-  searchParams:{
-    month?:string,
-    year?:string
-  }
+type Period = {
+  month: number;
+  year: number;
 };
 
-export default async function Page({ params ,searchParams}: Props) {
+type Props = {
+  params: { groupname: string };
+  searchParams: { month?: string; year?: string };
+};
+
+export default async function Page({ params, searchParams }: Props) {
   const current = new Date();
-  const { month, year } = searchParams;
-  const period = {
-    month: month ? parseInt(month) : current.getMonth() + 1,
-    year: year ? parseInt(year) : current.getFullYear(),
+  const { month, year } = searchParams || {};
+  const { groupname } = params;
+
+  const period: Period = {
+    month: month ? parseInt(month, 10) : current.getMonth() + 1,
+    year: year ? parseInt(year, 10) : current.getFullYear(),
   };
 
-  if (params.groupname) {
+  if (!groupname) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <span className="text-lg font-medium text-red-500">Error loading data!</span>
+        <span className="text-lg font-medium text-red-500">
+          Error: Group name is required to load analytics!
+        </span>
       </div>
     );
   }
@@ -33,7 +37,9 @@ export default async function Page({ params ,searchParams}: Props) {
   return (
     <div className="flex flex-1 flex-col h-full p-6 bg-gray-50 dark:bg-gray-900">
       <div className="flex justify-between items-center border-b pb-4 mb-6 border-gray-200 dark:border-gray-700">
-        <h1 className="text-3xl font-bold text-gray-800 dark:text-white">Analytics</h1>
+        <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
+          Analytics
+        </h1>
         <Suspense fallback={<Skeleton className="w-[180px] h-[40px]" />}>
           <PeriodSelection selected={period} />
         </Suspense>
@@ -41,31 +47,38 @@ export default async function Page({ params ,searchParams}: Props) {
 
       <div className="flex flex-col gap-6">
         <Suspense fallback={<Skeleton className="w-full h-[200px] rounded-md" />}>
-          <StaticCard selected={period} groupname={params.groupname} />
+          <StaticCard selected={period} groupname={groupname} />
         </Suspense>
       </div>
     </div>
   );
 }
 
-type Period = {
-  month: number;
-  year: number;
-};
-
 async function PeriodSelection({ selected }: { selected: Period }) {
   const periods = await GetPeriod();
   if (!periods) {
-    return null;
+    return (
+      <div className="text-red-500">
+        Error: Unable to load period options.
+      </div>
+    );
   }
   return <Periodselection period={periods} selected={selected} />;
 }
 
-async function StaticCard({ selected, groupname }: { selected: Period; groupname: string }) {
+async function StaticCard({
+  selected,
+  groupname,
+}: {
+  selected: Period;
+  groupname: string;
+}) {
   const stats = await getStatsForDay(selected, groupname);
   if (!stats) {
     return (
-      <div className="text-red-500">Error fetching statistics for the selected period.</div>
+      <div className="text-red-500">
+        Error: Unable to fetch statistics for the selected period.
+      </div>
     );
   }
   return (
